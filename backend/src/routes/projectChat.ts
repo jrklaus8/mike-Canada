@@ -38,7 +38,8 @@ projectChatRouter.post("/", requireAuth, async (req, res) => {
             attached_documents?: { filename: string; document_id: string }[];
         };
 
-    const db = createServerSupabase();
+    const token = res.locals.token as string;
+    const db = createServerSupabase(token);
 
     // Verify the user has access to the project (owner or shared member).
     const projectAccess = await checkProjectAccess(

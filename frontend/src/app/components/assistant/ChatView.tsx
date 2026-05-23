@@ -586,7 +586,8 @@ export function ChatView({
                                     LSO Rule 3.1-2: AI outputs must be independently verified against primary legal sources (e.g., CanLII).
                                 </p>
                                 <p className="text-xs text-gray-500">
-                                    You are fully accountable for AI-fabricated citations.
+                                    <span className="font-semibold text-red-700">Data Sovereignty Notice:</span> BYOK to cloud APIs (Anthropic/Google) is NOT local inference. Client data leaves the firm. 
+                                    Use the Ollama local provider for true hardware-level data isolation.
                                 </p>
                                 <p className="text-xs text-gray-400 mt-1 uppercase tracking-wider">
                                     Open Source Project — Use at your own risk "AS IS"

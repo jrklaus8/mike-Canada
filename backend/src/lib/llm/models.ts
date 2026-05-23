@@ -22,6 +22,10 @@ export const CLAUDE_LOW_MODELS = ["claude-haiku-4-5"] as const;
 export const GEMINI_LOW_MODELS = ["gemini-3.1-flash-lite-preview"] as const;
 export const OPENAI_LOW_MODELS = ["gpt-5.4-nano"] as const;
 
+export const OLLAMA_MAIN_MODELS = ["ollama-llama3", "ollama-mistral"] as const;
+export const OLLAMA_MID_MODELS = ["ollama-llama3"] as const;
+export const OLLAMA_LOW_MODELS = ["ollama-mistral"] as const;
+
 export const DEFAULT_MAIN_MODEL = "gemini-3-flash-preview";
 export const DEFAULT_TITLE_MODEL = "gemini-3.1-flash-lite-preview";
 export const DEFAULT_TABULAR_MODEL = "gemini-3-flash-preview";
@@ -30,12 +34,15 @@ const ALL_MODELS = new Set<string>([
     ...CLAUDE_MAIN_MODELS,
     ...GEMINI_MAIN_MODELS,
     ...OPENAI_MAIN_MODELS,
+    ...OLLAMA_MAIN_MODELS,
     ...CLAUDE_MID_MODELS,
     ...GEMINI_MID_MODELS,
     ...OPENAI_MID_MODELS,
+    ...OLLAMA_MID_MODELS,
     ...CLAUDE_LOW_MODELS,
     ...GEMINI_LOW_MODELS,
     ...OPENAI_LOW_MODELS,
+    ...OLLAMA_LOW_MODELS,
 ]);
 
 // ---------------------------------------------------------------------------
@@ -46,6 +53,7 @@ export function providerForModel(model: string): Provider {
     if (model.startsWith("claude")) return "claude";
     if (model.startsWith("gemini")) return "gemini";
     if (model.startsWith("gpt-")) return "openai";
+    if (model.startsWith("ollama-")) return "ollama";
     throw new Error(`Unknown model id: ${model}`);
 }
 

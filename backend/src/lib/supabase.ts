@@ -1,11 +1,24 @@
 import { createClient } from "@supabase/supabase-js";
 
 /**
- * Server-side Supabase client using the service role key.
- * Bypasses RLS — only use in API routes after verifying the user.
+ * Server-side Supabase client.
+ * If a token is provided, uses the anon key to enforce Row Level Security (RLS).
+ * Bypasses RLS only if token is omitted (falls back to service role key).
  */
-export function createServerSupabase() {
+export function createServerSupabase(token?: string) {
   const url = process.env.SUPABASE_URL || "";
+  
+  if (token) {
+    const anonKey = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_SECRET_KEY || "";
+    if (!url || !anonKey) {
+      throw new Error("SUPABASE_URL and SUPABASE_ANON_KEY must be set");
+    }
+    return createClient(url, anonKey, {
+      auth: { persistSession: false },
+      global: { headers: { Authorization: `Bearer ${token}` } }
+    });
+  }
+
   const key = process.env.SUPABASE_SECRET_KEY || "";
   if (!url || !key) {
     throw new Error("SUPABASE_URL and SUPABASE_SECRET_KEY must be set");
