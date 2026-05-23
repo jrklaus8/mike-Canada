@@ -10,10 +10,14 @@ A Canadian-first adaptation of the MikeOSS legal AI platform, customized for Can
 - **CanLII Retrieval Layer:** Prioritizes SCC, appellate, and Ontario court decisions.
 - **McGill Guide Citation:** Validates and formats all generated citations according to the Canadian Guide to Uniform Legal Citation.
 - **LSO Compliance:** Built with the Law Society of Ontario's Generative AI guidelines in mind (competence, confidentiality, supervision).
+- **PIPEDA Compliance:** Express consent mechanisms, firm-specific Privacy Policy mapping, global cookie consent banners, and automated Right to Erasure / Data Deletion controls.
+- **Data Sovereignty (Local Inference):** Seamlessly integrates with local `Ollama` models to ensure strictly confidential client data never touches third-party APIs (bypassing BYOK vulnerabilities).
 - **Audit Logging:** Every response includes verifiable citation sources and confidence scores.
 
 ## Architecture (Canadian Fork)
-- **Backend:** FastAPI, Python 3.11+
+- **Backend:** Express API, Node.js 20+
+- **Security:** JWT-based Row Level Security (RLS) enforcement directly in PostgreSQL.
+- **ORM & AI:** Modern stack migration utilizing Drizzle ORM and Vercel AI SDK.
 - **Retrieval:** CanLII API integration / Web Scraping (fallback)
 - **Vector DB:** Qdrant (local by default for data sovereignty)
 - **Frontend:** React / Next.js
