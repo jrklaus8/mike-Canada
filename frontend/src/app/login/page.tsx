@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { SiteLogo } from "@/components/site-logo";
 import { useAuth } from "@/contexts/AuthContext";
+
 export default function LoginPage() {
     const router = useRouter();
     const { isAuthenticated, authLoading } = useAuth();
@@ -16,25 +16,26 @@ export default function LoginPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        if (!authLoading && isAuthenticated) {
-            router.replace("/assistant");
-        }
-    }, [authLoading, isAuthenticated, router]);
-
+    // Bypassing Supabase for LSO Data Sovereignty
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
         setError(null);
 
         try {
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email,
-                password,
+            const response = await fetch("/api/v1/auth/token", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
             });
 
-            if (error) throw error;
+            if (!response.ok) {
+                throw new Error("Invalid credentials");
+            }
 
+            const data = await response.json();
+            localStorage.setItem("canadian_jwt", data.access_token);
+            
             router.push("/assistant");
         } catch (error: any) {
             setError(error.message || "An error occurred during login");
@@ -53,7 +54,7 @@ export default function LoginPage() {
                 <div className="bg-white border border-gray-200 rounded-2xl p-8 mb-4">
                     <div className="flex justify-between items-center mb-6">
                         <h2 className="text-left text-2xl font-serif">
-                            Log In
+                            Log In (LSO Compliant)
                         </h2>
                         <div className="bg-gray-100 p-1 rounded-md flex text-xs font-medium">
                             <span className="text-gray-600 px-3 py-1 bg-white rounded-sm shadow-sm">
@@ -120,10 +121,9 @@ export default function LoginPage() {
                     </form>
                 </div>
                 <p className="text-center text-xs text-gray-500 leading-relaxed px-2">
-                    Mike hosted on MikeOSS.com is currently a demo service.
-                    Please do not upload, submit, or store sensitive,
-                    confidential, privileged, client, or personally
-                    identifiable documents.
+                    This Canadian adaptation is designed for data sovereignty. 
+                    However, as an AI system, lawyers must review all outputs to comply 
+                    with the Law Society of Ontario's Rules of Professional Conduct.
                 </p>
             </div>
         </div>
