@@ -580,11 +580,22 @@ export function ChatView({
                                 onCancel={cancel}
                                 isLoading={isResponseLoading}
                             />
-                            <div className="py-3 text-center">
-                                <p className="text-xs text-gray-500">
-                                    AI can make mistakes. Answers are not legal
-                                    advice.
+                            <div className="py-3 text-center flex flex-col gap-1">
+                                <p className="text-xs text-gray-500 font-bold">
+                                    LSO Rule 3.1-2: AI outputs must be independently verified against primary legal sources (e.g., CanLII).
                                 </p>
+                                <p className="text-xs text-gray-500">
+                                    You are fully accountable for AI-fabricated citations.
+                                </p>
+                                <button 
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        upsertTab({ kind: "compliance", id: "lso-compliance", documentId: "lso-compliance", filename: "LSO Compliance", versionId: null, versionNumber: null });
+                                    }} 
+                                    className="text-xs text-blue-600 hover:underline cursor-pointer"
+                                >
+                                    View LSO Compliance Details
+                                </button>
                             </div>
                         </div>
                     </div>

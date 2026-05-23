@@ -7,6 +7,7 @@ import type {
     MikeCitationAnnotation,
     MikeEditAnnotation,
 } from "../shared/types";
+import { LSOComplianceTab } from "@/components/LSOComplianceTab";
 
 // ---------------------------------------------------------------------------
 // Tab data
@@ -42,7 +43,9 @@ export type EditTab = CommonTab & {
     edit: MikeEditAnnotation;
 };
 
-export type AssistantSidePanelTab = DocumentTab | CitationTab | EditTab;
+export type ComplianceTab = CommonTab & { kind: "compliance" };
+
+export type AssistantSidePanelTab = DocumentTab | CitationTab | EditTab | ComplianceTab;
 
 interface Props {
     tabs: AssistantSidePanelTab[];
@@ -247,24 +250,28 @@ export function AssistantSidePanel({
                             className={`absolute inset-0 flex flex-col ${isActive ? "" : "invisible pointer-events-none"}`}
                             aria-hidden={!isActive}
                         >
-                            <DocPanel
-                                documentId={tab.documentId}
-                                filename={tab.filename}
-                                versionId={tab.versionId}
-                                versionNumber={tab.versionNumber}
-                                mode={mode}
-                                isReloading={
-                                    isEditorReloading?.(tab.documentId) ?? false
-                                }
-                                warning={tab.warning ?? null}
-                                onWarningDismiss={() =>
-                                    onWarningDismiss?.(tab.id)
-                                }
-                                initialScrollTop={tab.initialScrollTop ?? null}
-                                onScrollChange={(scrollTop) =>
-                                    onScrollChange?.(tab.id, scrollTop)
-                                }
-                            />
+                            {tab.kind === "compliance" ? (
+                                <LSOComplianceTab />
+                            ) : (
+                                <DocPanel
+                                    documentId={tab.documentId}
+                                    filename={tab.filename}
+                                    versionId={tab.versionId}
+                                    versionNumber={tab.versionNumber}
+                                    mode={mode}
+                                    isReloading={
+                                        isEditorReloading?.(tab.documentId) ?? false
+                                    }
+                                    warning={tab.warning ?? null}
+                                    onWarningDismiss={() =>
+                                        onWarningDismiss?.(tab.id)
+                                    }
+                                    initialScrollTop={tab.initialScrollTop ?? null}
+                                    onScrollChange={(scrollTop) =>
+                                        onScrollChange?.(tab.id, scrollTop)
+                                    }
+                                />
+                            )}
                         </div>
                     );
                 })}
