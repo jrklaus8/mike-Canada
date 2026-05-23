@@ -22,6 +22,7 @@ export default function SignupPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
+    const [consent, setConsent] = useState(false);
 
     useEffect(() => {
         if (!authLoading && isAuthenticated && !success) {
@@ -37,6 +38,13 @@ export default function SignupPage() {
         // Validate passwords match
         if (password !== confirmPassword) {
             setError("Passwords do not match");
+            setLoading(false);
+            return;
+        }
+
+        // Validate express consent
+        if (!consent) {
+            setError("You must agree to the Terms of Use and Privacy Policy.");
             setLoading(false);
             return;
         }
@@ -242,6 +250,27 @@ export default function SignupPage() {
                             </div>
                         )}
 
+                        <div className="flex items-start mt-4 mb-2">
+                            <input
+                                id="consent"
+                                type="checkbox"
+                                checked={consent}
+                                onChange={(e) => setConsent(e.target.checked)}
+                                className="mt-1 h-4 w-4 rounded border-gray-300 text-black focus:ring-black"
+                            />
+                            <label htmlFor="consent" className="ml-2 block text-xs text-gray-600">
+                                I explicitly agree to the{" "}
+                                <Link href="/terms" target="_blank" className="text-blue-600 hover:underline">
+                                    Terms of Use
+                                </Link>{" "}
+                                and{" "}
+                                <Link href="/privacy" target="_blank" className="text-blue-600 hover:underline">
+                                    Privacy Policy
+                                </Link>
+                                , and consent to the collection and processing of my data in accordance with PIPEDA requirements.
+                            </label>
+                        </div>
+
                         <Button
                             type="submit"
                             disabled={loading}
@@ -250,28 +279,6 @@ export default function SignupPage() {
                             {loading ? "Creating account..." : "Sign up"}
                         </Button>
                     </form>
-
-                    {/* Terms and Privacy */}
-                    <div className="mt-4 text-center text-xs text-gray-500">
-                        By signing up, you agree to our{" "}
-                        <Link
-                            href="https://mikeoss.com/terms"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:underline"
-                        >
-                            Terms of Use
-                        </Link>{" "}
-                        and{" "}
-                        <Link
-                            href="https://mikeoss.com/privacy"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:underline"
-                        >
-                            Privacy Policy
-                        </Link>
-                    </div>
                 </div>
                 <p className="text-center text-xs text-gray-500 leading-relaxed px-2">
                     Mike hosted on MikeOSS.com is currently a demo service.
