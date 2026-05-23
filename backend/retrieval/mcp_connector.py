@@ -1,49 +1,46 @@
-import httpx
 import logging
+import os
+from openai import AsyncOpenAI
+from dotenv import load_dotenv
 
+load_dotenv()
 logger = logging.getLogger(__name__)
 
 class A2AJ_MCP_Client:
     """
-    Model Context Protocol (MCP) Client designed to connect to the A2AJ server
-    (https://mcp.a2aj.ca/mcp) for Canadian legal retrieval, as inspired by 
-    the Emilie (Swiss) fork.
+    Model Context Protocol (MCP) Client for A2AJ.
+    Refactored to use the native OpenAI SDK's MCP tools configuration,
+    as demonstrated in the A2AJ official notebook guide.
     """
-    def __init__(self, mcp_url: str = "https://mcp.a2aj.ca/mcp"):
+    def __init__(self, mcp_url: str = "https://api.a2aj.ca/mcp"):
+        # Note: API version used per the 2025/2026 guidelines for OpenAI compatibility
         self.mcp_url = mcp_url
-        self.client = httpx.AsyncClient()
+        self.client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-    async def list_tools(self):
+    async def execute_mcp_query(self, query: str):
         """
-        Interrogates the MCP server for available legal retrieval tools.
+        Executes a legal query by natively passing the A2AJ MCP server 
+        as a tool to the OpenAI client.
         """
         try:
-            # MCP standard tool listing (JSON-RPC wrapper representation)
-            response = await self.client.post(self.mcp_url, json={
-                "jsonrpc": "2.0",
-                "id": 1,
-                "method": "tools/list"
-            })
-            return response.json()
+            # Using the new responses API that natively supports remote MCP servers
+            response = await self.client.responses.create(
+                model=os.getenv("LLM_MODEL", "gpt-4o"), # Fallback to 4o if gpt-5 unavailable
+                input=query,
+                tools=[
+                    {
+                        "type": "mcp",
+                        "server_label": "a2aj",
+                        "server_url": self.mcp_url,
+                        "require_approval": "never",
+                    }
+                ]
+            )
+            return {
+                "answer": response.output_text,
+                "raw_response": response.model_dump()
+            }
         except Exception as e:
-            logger.error(f"Failed to connect to A2AJ MCP: {e}")
+            logger.error(f"Failed to execute MCP query via OpenAI SDK: {e}")
             return {"error": str(e)}
 
-    async def call_tool(self, tool_name: str, arguments: dict):
-        """
-        Calls a specific tool on the A2AJ server (e.g., fetch_case_law, verify_citation).
-        """
-        try:
-            response = await self.client.post(self.mcp_url, json={
-                "jsonrpc": "2.0",
-                "id": 2,
-                "method": "tools/call",
-                "params": {
-                    "name": tool_name,
-                    "arguments": arguments
-                }
-            })
-            return response.json()
-        except Exception as e:
-            logger.error(f"Failed to execute MCP tool {tool_name}: {e}")
-            return {"error": str(e)}
