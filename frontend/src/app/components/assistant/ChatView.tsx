@@ -444,7 +444,7 @@ export function ChatView({
     }, [panelMounted]);
 
     return (
-        <div className="h-full w-full flex relative">
+        <div className="h-full w-full flex relative bg-slate-50/30 dark:bg-slate-950/30 transition-colors duration-500">
             {/* Chat column */}
             <div className="flex flex-col h-full flex-1 relative">
                 {/* Scrollable messages */}
@@ -575,13 +575,15 @@ export function ChatView({
                     className="absolute bottom-0 left-0 right-0 w-full z-30"
                 >
                     <div className="w-full max-w-4xl mx-auto px-4 md:px-6">
-                        <div className="w-full rounded-t-[20px] bg-white">
-                            <ChatInput
-                                onSubmit={handleChat}
-                                onCancel={cancel}
-                                isLoading={isResponseLoading}
-                            />
-                            <div className="py-3 text-center flex flex-col gap-1">
+                        <div className="w-full rounded-t-[24px] glass-panel border-t border-x border-white/40 shadow-[0_-8px_32px_rgba(0,0,0,0.04)] overflow-hidden transition-all duration-300">
+                            <div className="bg-white/40 dark:bg-black/20 backdrop-blur-md pt-2 px-2">
+                                <ChatInput
+                                    onSubmit={handleChat}
+                                    onCancel={cancel}
+                                    isLoading={isResponseLoading}
+                                />
+                            </div>
+                            <div className="py-3 text-center flex flex-col gap-1 bg-white/60 dark:bg-black/40 backdrop-blur-md">
                                 <p className="text-xs text-gray-500 font-bold">
                                     LSO Rule 3.1-2: AI outputs must be independently verified against primary legal sources (e.g., CanLII).
                                 </p>

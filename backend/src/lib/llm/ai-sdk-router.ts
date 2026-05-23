@@ -39,16 +39,38 @@ export async function createAIStream(
         messages,
         tools: {
             fetchLegalCase: tool({
-                description: "Fetch a case document from CanLII.",
+                description: "Fetch a primary source case document from CanLII using its standard legal citation.",
                 parameters: z.object({
-                    citation: z.string().describe("The CanLII citation to fetch."),
+                    citation: z.string().describe("The CanLII citation to fetch (e.g., '2024 SCC 1')."),
                 }),
                 execute: async ({ citation }) => {
-                    // Logic to fetch from CanLII or local DB
-                    return { success: true, text: "Case content here..." };
+                    // Internal fetch to the CanLII integration route we built
+                    try {
+                        const response = await fetch(`http://localhost:${process.env.PORT || 3001}/canlii/document?citation=${encodeURIComponent(citation)}`);
+                        if (!response.ok) throw new Error("Failed to fetch from CanLII");
+                        const data = await response.json();
+                        return { success: true, text: data.content, source: data.source };
+                    } catch (error: any) {
+                        return { success: false, error: error.message };
+                    }
                 },
             }),
-            // Additional tools (e.g. searchProjectDocuments) can be added cleanly here.
+            searchCanLII: tool({
+                description: "Search CanLII for Canadian jurisprudence by keyword or legal concept.",
+                parameters: z.object({
+                    query: z.string().describe("The search query or keywords."),
+                }),
+                execute: async ({ query }) => {
+                    try {
+                        const response = await fetch(`http://localhost:${process.env.PORT || 3001}/canlii/search?q=${encodeURIComponent(query)}`);
+                        if (!response.ok) throw new Error("Failed to search CanLII");
+                        const data = await response.json();
+                        return { success: true, results: data.results };
+                    } catch (error: any) {
+                        return { success: false, error: error.message };
+                    }
+                },
+            }),
         },
         maxSteps: 5, // Vercel AI SDK handles multi-step tool loops natively!
     });
