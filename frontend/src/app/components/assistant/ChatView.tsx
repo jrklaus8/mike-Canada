@@ -587,6 +587,9 @@ export function ChatView({
                                 <p className="text-xs text-gray-500">
                                     You are fully accountable for AI-fabricated citations.
                                 </p>
+                                <p className="text-xs text-gray-400 mt-1 uppercase tracking-wider">
+                                    Open Source Project — Use at your own risk "AS IS"
+                                </p>
                                 <button 
                                     onClick={(e) => {
                                         e.preventDefault();

@@ -1,5 +1,7 @@
 # MikeOSS Canada Fork
 
+> **DISCLAIMER:** This is an open-source project provided "AS IS", without warranty of any kind. Anyone using this software does so entirely at their own risk. Outputs may contain errors, inaccuracies, or hallucinations. This tool does not provide legal advice.
+
 > **Credits & Acknowledgments:** This project is a Canadian adaptation of the [MikeOSS](https://github.com/willchen96/mike) platform, originally created by William Chen (@willchen96). All core architectural credit for the Mike framework belongs to him.
 
 A Canadian-first adaptation of the MikeOSS legal AI platform, customized for Canadian legal practice, CanLII integration, and Law Society of Ontario compliance.

@@ -82,9 +82,12 @@ export function InitialView({ onSubmit }: InitialViewProps) {
                         onProjectsClick={() => setProjectModalOpen(true)}
                     />
 
-                    <div className="text-center">
-                        <p className="text-xs py-3 mb-3 text-gray-500">
-                            AI can make mistakes. Answers are not legal advice.
+                    <div className="text-center flex flex-col gap-1 mt-2">
+                        <p className="text-xs text-gray-500 font-bold uppercase tracking-wider">
+                            Open Source Project — Provided "AS IS"
+                        </p>
+                        <p className="text-xs text-gray-500">
+                            Use at your own risk. AI can make mistakes. Answers are not legal advice.
                         </p>
                     </div>
                 </div>
