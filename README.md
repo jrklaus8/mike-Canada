@@ -135,6 +135,7 @@ Open `http://localhost:3000`.
 
 **DOC or DOCX conversion fails.** Install LibreOffice locally and restart the backend so document conversion commands are available on the process path.
 
+
 ## Useful Checks
 
 ```bash
@@ -142,3 +143,10 @@ npm run build --prefix backend
 npm run build --prefix frontend
 npm run lint --prefix frontend
 ```
+
+---
+
+## Contributors
+
+* **Creator:** William Chen ([@willchen96](https://github.com/willchen96)) - *Original Architect & Developer of MikeOSS*
+* **Maintainers:** Canadian Fork Community Contributors
