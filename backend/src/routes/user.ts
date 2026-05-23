@@ -174,7 +174,7 @@ async function loadProfile(
 // POST /user/profile
 userRouter.post("/profile", requireAuth, async (_req, res) => {
   const userId = res.locals.userId as string;
-  const db = createServerSupabase();
+  const db = createServerSupabase(res.locals.token as string);
   const error = await ensureProfileRow(db, userId);
   if (error) return void res.status(500).json({ detail: error.message });
   res.json({ ok: true });
@@ -183,7 +183,7 @@ userRouter.post("/profile", requireAuth, async (_req, res) => {
 // GET /user/profile
 userRouter.get("/profile", requireAuth, async (_req, res) => {
   const userId = res.locals.userId as string;
-  const db = createServerSupabase();
+  const db = createServerSupabase(res.locals.token as string);
   const { data, error } = await loadProfile(db, userId, {
     repairMissing: true,
   });
@@ -198,7 +198,7 @@ userRouter.patch("/profile", requireAuth, async (req, res) => {
   const parsed = validateProfilePayload(req.body);
   if (!parsed.ok) return void res.status(400).json({ detail: parsed.detail });
 
-  const db = createServerSupabase();
+  const db = createServerSupabase(res.locals.token as string);
   const ensureError = await ensureProfileRow(db, userId);
   if (ensureError)
     return void res.status(500).json({ detail: ensureError.message });
@@ -219,7 +219,7 @@ userRouter.patch("/profile", requireAuth, async (req, res) => {
 // GET /user/api-keys
 userRouter.get("/api-keys", requireAuth, async (_req, res) => {
   const userId = res.locals.userId as string;
-  const db = createServerSupabase();
+  const db = createServerSupabase(res.locals.token as string);
   const status = await getUserApiKeyStatus(userId, db);
   res.json(status);
 });
@@ -233,7 +233,7 @@ userRouter.put("/api-keys/:provider", requireAuth, async (req, res) => {
 
   const apiKey =
     typeof req.body?.api_key === "string" ? req.body.api_key : null;
-  const db = createServerSupabase();
+  const db = createServerSupabase(res.locals.token as string);
   try {
     if (hasEnvApiKey(provider)) {
       return void res.status(409).json({
@@ -256,7 +256,7 @@ userRouter.put("/api-keys/:provider", requireAuth, async (req, res) => {
 // DELETE /user/account
 userRouter.delete("/account", requireAuth, async (_req, res) => {
   const userId = res.locals.userId as string;
-  const db = createServerSupabase();
+  const db = createServerSupabase(res.locals.token as string);
   const { error } = await db.auth.admin.deleteUser(userId);
   if (error) return void res.status(500).json({ detail: error.message });
   res.status(204).send();

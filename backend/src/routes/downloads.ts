@@ -25,7 +25,7 @@ downloadsRouter.get("/:token", requireAuth, async (req, res) => {
     if (!info)
         return void res.status(404).json({ detail: "Invalid link" });
 
-    const db = createServerSupabase();
+    const db = createServerSupabase(res.locals.token as string);
     let version:
         | {
               id: string;

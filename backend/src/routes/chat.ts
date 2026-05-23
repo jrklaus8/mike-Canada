@@ -140,7 +140,7 @@ async function getAccessibleChat(
 // listed per-project via GET /projects/:projectId/chats.
 chatRouter.get("/", requireAuth, async (req, res) => {
     const userId = res.locals.userId as string;
-    const db = createServerSupabase();
+    const db = createServerSupabase(res.locals.token as string);
     const requestedLimit = Number.parseInt(String(req.query.limit ?? ""), 10);
     const limit = Number.isFinite(requestedLimit)
         ? Math.min(Math.max(requestedLimit, 1), 100)
@@ -182,7 +182,7 @@ chatRouter.post("/create", requireAuth, async (req, res) => {
         return void res.status(400).json({ detail: parsedProjectId.detail });
     }
     const projectId = parsedProjectId.projectId;
-    const db = createServerSupabase();
+    const db = createServerSupabase(res.locals.token as string);
     const projectAccess = await validateAccessibleProjectId(
         projectId,
         userId,
@@ -209,7 +209,7 @@ chatRouter.get("/:chatId", requireAuth, async (req, res) => {
     const userId = res.locals.userId as string;
     const userEmail = res.locals.userEmail as string | undefined;
     const { chatId } = req.params;
-    const db = createServerSupabase();
+    const db = createServerSupabase(res.locals.token as string);
 
     const chat = await getAccessibleChat(chatId, userId, userEmail, db);
     if (!chat)
@@ -350,7 +350,7 @@ chatRouter.patch("/:chatId", requireAuth, async (req, res) => {
     if (!title)
         return void res.status(400).json({ detail: "title is required" });
 
-    const db = createServerSupabase();
+    const db = createServerSupabase(res.locals.token as string);
     const { data, error } = await db
         .from("chats")
         .update({ title })
@@ -368,7 +368,7 @@ chatRouter.patch("/:chatId", requireAuth, async (req, res) => {
 chatRouter.delete("/:chatId", requireAuth, async (req, res) => {
     const userId = res.locals.userId as string;
     const { chatId } = req.params;
-    const db = createServerSupabase();
+    const db = createServerSupabase(res.locals.token as string);
     const { error } = await db
         .from("chats")
         .delete()
@@ -389,7 +389,7 @@ chatRouter.post("/:chatId/generate-title", requireAuth, async (req, res) => {
     if (!message)
         return void res.status(400).json({ detail: "message is required" });
 
-    const db = createServerSupabase();
+    const db = createServerSupabase(res.locals.token as string);
     const chat = await getAccessibleChat(chatId, userId, userEmail, db);
     if (!chat)
         return void res.status(404).json({ detail: "Chat not found" });
@@ -457,7 +457,7 @@ chatRouter.post("/", requireAuth, async (req, res) => {
     });
 
     const userEmail = res.locals.userEmail as string | undefined;
-    const db = createServerSupabase();
+    const db = createServerSupabase(res.locals.token as string);
     let chatId = chat_id ?? null;
     let chatTitle: string | null = null;
     let resolvedProjectId: string | null = parsedProjectId.projectId;
