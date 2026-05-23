@@ -165,6 +165,15 @@ export function DocPanel({
                     initialScrollTop={initialScrollTop ?? null}
                     onScrollChange={onScrollChange}
                 />
+            ) : documentId.startsWith("mcp-") ? (
+                <div className="flex-1 overflow-auto bg-gray-100 p-6 flex flex-col items-center justify-center text-center">
+                    <div className="bg-white p-6 rounded-lg shadow-sm max-w-md border border-gray-200">
+                        <h3 className="font-serif text-lg font-bold mb-2 text-blue-900">CanLII Citation</h3>
+                        <p className="text-gray-600 text-sm">
+                            Full PDF rendering is not yet supported for external Canadian MCP citations. Please refer to the highlighted text excerpt above.
+                        </p>
+                    </div>
+                </div>
             ) : (
                 <DocView
                     doc={{
