@@ -16,6 +16,14 @@ A Canadian-first adaptation of the MikeOSS legal AI platform, customized for Can
 - **Vector DB:** Qdrant (local by default for data sovereignty)
 - **Frontend:** React / Next.js
 
+## Data Sovereignty: Local Legal Database Option
+
+By default, MikeOSS Canada connects to the public [A2AJ MCP server](https://mcp.a2aj.ca) for case law retrieval. However, for maximum data privacy and absolute offline sovereignty, you can host the entire Canadian legal database locally:
+1. Clone the A2AJ infrastructure repository: `git clone https://github.com/a2aj-ca/a2aj-api-public`
+2. Follow their instructions to start the MongoDB and Elasticsearch instances locally.
+3. In your MikeOSS `backend/.env` file, set: `A2AJ_MCP_URL=http://localhost:<YOUR_PORT>/mcp`
+Your AI will now query the local database without sending retrieval queries over the public internet.
+
 ---
 
 # Original MikeOSS Documentation

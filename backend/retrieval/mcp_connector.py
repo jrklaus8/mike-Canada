@@ -15,8 +15,9 @@ class MikeOSS_MCP_Manager:
         self.client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
         
         # Remote SSE/HTTP MCP Servers
-        self.a2aj_url = "https://api.a2aj.ca/mcp"
-        self.courtlistener_url = "https://mcp.courtlistener.com"
+        # Users prioritizing data sovereignty can set A2AJ_MCP_URL to their local self-hosted instance.
+        self.a2aj_url = os.getenv("A2AJ_MCP_URL", "https://api.a2aj.ca/mcp")
+        self.courtlistener_url = os.getenv("COURTLISTENER_MCP_URL", "https://mcp.courtlistener.com")
         
         # Local Stdio MCP Server (requires node/npx environment)
         # npm: @ansvar/canadian-law-mcp
