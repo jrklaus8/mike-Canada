@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useAssistantChat } from "@/app/hooks/useAssistantChat";
+import { useCanadianChat } from "@/app/hooks/useCanadianChat";
 import { InitialView } from "@/app/components/assistant/InitialView";
 import { ChatView } from "@/app/components/assistant/ChatView";
 import type { MikeMessage } from "@/app/components/shared/types";
@@ -9,7 +9,7 @@ import type { MikeMessage } from "@/app/components/shared/types";
 export default function AssistantPage() {
     const router = useRouter();
     const { messages, isResponseLoading, handleChat, handleNewChat, cancel } =
-        useAssistantChat();
+        useCanadianChat();
 
     async function handleInitialSubmit(message: MikeMessage) {
         const chatId = await handleNewChat(message);

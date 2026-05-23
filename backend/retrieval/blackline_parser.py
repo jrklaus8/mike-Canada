@@ -1,15 +1,15 @@
 import docx
 from typing import List, Dict
 
-class RedlineParser:
+class BlacklineParser:
     """
-    Implements logic from the Mike-redline fork. 
+    Implements logic from the Mike-blackline fork. 
     Standard LLM document ingestion flattens text and loses tracked changes.
     This parser extracts <w:ins> and <w:del> tags from DOCX XML to make the LLM
-    "redline-aware" for contract negotiation workflows.
+    "blackline-aware" for contract negotiation workflows.
     """
     
-    def parse_docx_redlines(self, file_path: str) -> Dict[str, List[str]]:
+    def parse_docx_blacklines(self, file_path: str) -> Dict[str, List[str]]:
         """
         Parses a DOCX file and specifically extracts insertions and deletions.
         """
