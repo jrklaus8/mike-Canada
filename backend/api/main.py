@@ -4,13 +4,13 @@ from pydantic import BaseModel
 from typing import List, Optional
 
 from backend.api.auth import SovereigntyAuth
-from backend.retrieval.mcp_connector import A2AJ_MCP_Client
+from backend.retrieval.mcp_connector import MikeOSS_MCP_Manager
 from backend.reasoning.council import MultiModelCouncil
 from backend.retrieval.redline_parser import RedlineParser
 
 app = FastAPI(title="MikeOSS Canada API", description="Canadian legal intelligence system API", version="0.2.0")
 
-mcp_client = A2AJ_MCP_Client()
+mcp_manager = MikeOSS_MCP_Manager()
 council = MultiModelCouncil()
 redline_parser = RedlineParser()
 
