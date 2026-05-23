@@ -41,9 +41,9 @@ export function InitialView({ onSubmit }: InitialViewProps) {
     }, [iconOffset]);
 
     return (
-        <div className="flex flex-col h-full w-full px-6">
+        <div className="flex flex-col h-full w-full px-6 bg-animated-gradient transition-colors duration-1000">
             <div className="flex-1 flex flex-col items-center justify-center">
-                <div className="flex-col items-center w-full max-w-4xl relative px-0 xl:px-8">
+                <div className="flex-col items-center w-full max-w-4xl relative px-8 xl:px-12 py-16 glass-panel rounded-3xl transition-all duration-700 hover:shadow-2xl">
                     <div className="mb-10 relative flex items-center justify-center">
                         <div
                             className="absolute h-[35px]"

@@ -485,6 +485,7 @@ export function ChatView({
                                 return messages.map((msg, i) => (
                                     <div
                                         key={i}
+                                        className="animate-chat-bubble"
                                         ref={
                                             i === lastUserIndex
                                                 ? latestUserMessageRef

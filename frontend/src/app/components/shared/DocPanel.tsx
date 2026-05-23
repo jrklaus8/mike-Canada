@@ -165,6 +165,17 @@ export function DocPanel({
                     initialScrollTop={initialScrollTop ?? null}
                     onScrollChange={onScrollChange}
                 />
+            ) : documentId.startsWith("mcp-legis-") ? (
+                <div className="flex-1 overflow-auto bg-gray-100 p-6 flex flex-col items-center justify-center text-center">
+                    <div className="bg-white p-6 rounded-lg shadow-sm max-w-md border border-gray-200 border-t-4 border-t-red-700">
+                        <h3 className="font-serif text-lg font-bold mb-2 text-gray-900 flex items-center justify-center gap-2">
+                            <span className="text-red-700">🍁</span> Justice Canada Legislation
+                        </h3>
+                        <p className="text-gray-600 text-sm">
+                            Statute parsing via MCP. Please refer to the highlighted text excerpt above.
+                        </p>
+                    </div>
+                </div>
             ) : documentId.startsWith("mcp-") ? (
                 <div className="flex-1 overflow-auto bg-gray-100 p-6 flex flex-col items-center justify-center text-center">
                     <div className="bg-white p-6 rounded-lg shadow-sm max-w-md border border-gray-200">
