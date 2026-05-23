@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    container_name: mikeoss_canada_api
+    ports:
+      - "8000:8000"
+    environment:
+      - CANLII_API_KEY=${CANLII_API_KEY}
+      - LLM_PROVIDER=${LLM_PROVIDER:-local}
+    volumes:
+      - ./backend:/app/backend
+    depends_on:
+      - qdrant
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: mikeoss_canada_vector_db
+    ports:
+      - "6333:6333"
+    volumes:
+      - ./qdrant_data:/qdrant/storage
