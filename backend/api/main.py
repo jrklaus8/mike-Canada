@@ -6,13 +6,13 @@ from typing import List, Optional
 from backend.api.auth import SovereigntyAuth
 from backend.retrieval.mcp_connector import MikeOSS_MCP_Manager
 from backend.reasoning.council import MultiModelCouncil
-from backend.retrieval.redline_parser import RedlineParser
+from backend.retrieval.blackline_parser import BlacklineParser
 
 app = FastAPI(title="MikeOSS Canada API", description="Canadian legal intelligence system API", version="0.2.0")
 
 mcp_manager = MikeOSS_MCP_Manager()
 council = MultiModelCouncil()
-redline_parser = RedlineParser()
+blackline_parser = BlacklineParser()
 
 class LegalQuery(BaseModel):
     query: str
@@ -60,12 +60,12 @@ async def get_citation_text(neutral_citation: str):
     # Uses MCP to fetch case
     return {"citation": neutral_citation, "highlight_text": "Placeholder for CanLII retrieved text."}
 
-@app.post("/api/v1/document/redline")
-async def parse_redline_document(file_path: str):
+@app.post("/api/v1/document/blackline")
+async def parse_blackline_document(file_path: str):
     """
-    Mike-redline feature: parse docx to keep tracked changes for LLM.
+    Mike-blackline feature: parse docx to keep tracked changes for LLM.
     """
-    return redline_parser.parse_docx_redlines(file_path)
+    return blackline_parser.parse_docx_blacklines(file_path)
 
 if __name__ == "__main__":
     import uvicorn
